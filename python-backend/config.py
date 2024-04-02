@@ -1,14 +1,15 @@
 import os
 import oracledb
+from dotenv import load_dotenv
 
 class OracleConfig:
-    def __init__(self, username = "", password = ""):
+    def __init__(self, username, password, hostname, port, sid):
         self.username = username
         self.password = password
-        self.hostname = "oracle.cise.ufl.edu"
-        self.port = 1521
-        self.sid = "orcl"
-        self.oracle_home = os.environ.get("ORACLE_HOME")
+        self.hostname = hostname
+        self.port = port
+        self.sid = sid
+        self.oracle_home = os.environ.get('ORACLE_HOME')
         self.config_dir = "."
         self.init_oracle_client()
         self.makedsn()

@@ -3,6 +3,7 @@ from flask import Flask, jsonify, render_template, request, redirect, url_for
 from flask_cors import CORS
 import oracledb
 from config import OracleConfig
+from dotenv import load_dotenv, find_dotenv
 
 # returns cursor
 def init_session(connection):
@@ -42,12 +43,17 @@ def start_pool(db):
 
     return pool
 
+
 app = Flask(__name__)
-CORS(app) # This is fine for development, but for production we need to restrict to our frontend domain for security
+CORS(app)  # This is fine for development, but for production we need to restrict to our frontend domain for security
 # CORS(app, resources={r"/api/*": {"origins": "http://OurFrontendDomain.com"}})
 
-# config database instance
-db = OracleConfig()
+# identify correct env file
+dotenv_path = os.path.join(os.path.dirname(__file__), '..', 'database.env')
+# load variables from env
+load_dotenv(dotenv_path)
+# configure database instance
+db = OracleConfig(os.environ.get('DB_USER'), os.environ.get('DB_PASSWORD'), os.environ.get('DB_HOST'), os.environ.get('DB_PORT'), os.environ.get('DB_SID'))
 db.init_oracle_client()
 dsn = db.makedsn()
 
@@ -78,17 +84,8 @@ def query_results():
     results = {}  # Replace with actual database query result
     return jsonify(results)
 
-# login to database
-@app.route('/', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        db.username = request.form['username']
-        db.password = request.form['password']
-        return redirect(url_for('dashboard'))
-    return render_template('login.html')
-
 # hosts button to aiport view
-@app.route('/dashboard')
+@app.route('/')
 def dashboard():
     return render_template('dashboard.html')
 
