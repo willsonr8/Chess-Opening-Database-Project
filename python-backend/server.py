@@ -14,6 +14,7 @@ def init_session(connection):
             NLS_DATE_FORMAT = 'YYYY-MM-DD HH24:MI'""")
     return cursor
 
+
 # Closes database cursor and connection
 def end_connection(connection, cursor):
     cursor.close()
@@ -29,7 +30,6 @@ def start_pool(db):
     pool_gmd = oracledb.SPOOL_ATTRVAL_WAIT
 
     dsn_tns = db.makedsn()
-
     print("Connecting to", os.environ.get(dsn_tns))  
 
     pool = oracledb.create_pool(user=os.environ.get(db.username),
