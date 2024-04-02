@@ -16,10 +16,9 @@ function App() {
         <Navigation />
       </nav>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home user={user} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />
         <Route path="/query-openings" element={<QueryOpenings />} />
         <Route path="/query-results" element={<QueryResults />} />
-          {/*<Route path="/user-login" element={<UserLogin />} >*/}
       </Routes>
 
       
